@@ -10,8 +10,11 @@ import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.config.KafkaListenerContainerFactory;
 import org.springframework.kafka.core.*;
 import org.springframework.kafka.listener.ConcurrentMessageListenerContainer;
+import org.springframework.kafka.listener.KafkaMessageListenerContainer;
+import org.springframework.kafka.listener.config.ContainerProperties;
 import org.springframework.kafka.support.LoggingProducerListener;
 import org.springframework.kafka.support.ProducerListener;
+import org.springframework.kafka.support.TopicPartitionInitialOffset;
 
 import java.io.IOException;
 import java.util.Map;
@@ -43,6 +46,15 @@ public class KafkaConfig {
     }
 
     @Bean
+    public KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, String>> kafkaListenerContainerFactory() {
+        ConcurrentKafkaListenerContainerFactory<String, String> factory = new ConcurrentKafkaListenerContainerFactory<>();
+        factory.setConsumerFactory(kafkaConsumerFactory());
+        factory.setConcurrency(10);
+        factory.getContainerProperties().setPollTimeout(1500);
+        return factory;
+    }
+
+    @Bean
     @ConditionalOnMissingBean(KafkaTemplate.class)
     public KafkaTemplate kafkaTemplate() {
         KafkaTemplate kafkaTemplate = new KafkaTemplate(producerFactory());
@@ -51,11 +63,7 @@ public class KafkaConfig {
     }
 
     @Bean
-    @ConditionalOnMissingBean(KafkaListenerContainerFactory.class)
-    public KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, String>> kafkaListenerContainerFactory() {
-        ConcurrentKafkaListenerContainerFactory<String, String> factory = new ConcurrentKafkaListenerContainerFactory<>();
-        factory.setConsumerFactory(kafkaConsumerFactory());
-        factory.getContainerProperties().setPollTimeout(1500);
-        return factory;
+    public Listener listener() {
+        return new Listener();
     }
 }

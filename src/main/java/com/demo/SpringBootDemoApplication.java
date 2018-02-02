@@ -29,8 +29,4 @@ public class SpringBootDemoApplication implements CommandLineRunner {
         template.send("topic1", "test3");
     }
 
-    @KafkaListener(topics = {"topic1"})
-    public void listen(ConsumerRecord<String, Object> cr) throws Exception {
-        System.out.println(cr.topic() + "..." + cr.value());
-    }
 }
