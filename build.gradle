@@ -1,6 +1,30 @@
+buildscript {
+    repositories {
+        maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.5.10.RELEASE")
+    }
+}
+
 apply plugin: 'java'
+apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
+
+jar {
+    baseName = 'spring-boot-demo'
+    version =  '0.1.0'
+}
+
+repositories {
+    mavenCentral()
+}
+
 sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
 dependencies {
-    compile("org.springframework.boot:spring-boot-starter-web:1.5.10.RELEASE")
+    compile("org.springframework.boot:spring-boot-starter-web")
+    compile 'org.springframework.kafka:spring-kafka:2.1.2.RELEASE'
+    testCompile("junit:junit")
 }
