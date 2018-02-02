@@ -1,0 +1,6 @@
+apply plugin: 'java'
+apply plugin: 'org.springframework.boot'
+sourceCompatibility = 1.8
+dependencies {
+    compile("org.springframework.boot:spring-boot-starter-web:1.5.10.RELEASE")
+}
