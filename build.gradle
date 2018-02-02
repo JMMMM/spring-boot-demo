@@ -13,7 +13,7 @@ apply plugin: 'org.springframework.boot'
 
 jar {
     baseName = 'spring-boot-demo'
-    version =  '0.1.0'
+    version = '0.1.0'
 }
 
 repositories {
@@ -24,7 +24,6 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 dependencies {
-    compile("org.springframework.boot:spring-boot-starter-web")
+    compile("org.springframework.boot:spring-boot-starter-web:1.5.10.RELEASE")
     compile 'org.springframework.kafka:spring-kafka:2.1.2.RELEASE'
-    testCompile("junit:junit")
 }

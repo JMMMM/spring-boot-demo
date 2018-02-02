@@ -11,6 +11,9 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.stream.Collectors;
 
+/**
+ * @author Jimmy
+ */
 public class KafkaUtils {
 
     private static Logger logger = LoggerFactory.getLogger(KafkaUtils.class);

@@ -6,7 +6,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
 import org.springframework.kafka.annotation.EnableKafka;
+import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
+import org.springframework.kafka.config.KafkaListenerContainerFactory;
 import org.springframework.kafka.core.*;
+import org.springframework.kafka.listener.ConcurrentMessageListenerContainer;
 import org.springframework.kafka.support.LoggingProducerListener;
 import org.springframework.kafka.support.ProducerListener;
 
@@ -24,8 +27,7 @@ public class KafkaConfig {
     @Bean
     @ConditionalOnMissingBean(ProducerFactory.class)
     public ProducerFactory producerFactory() {
-        ProducerFactory producerFactory = new DefaultKafkaProducerFactory(KafkaUtils.kafkaProperties);
-        return producerFactory;
+        return new DefaultKafkaProducerFactory(KafkaUtils.kafkaProperties);
     }
 
     @Bean
@@ -36,15 +38,24 @@ public class KafkaConfig {
 
     @Bean
     @ConditionalOnMissingBean(ProducerListener.class)
-    public ProducerListener<Object, Object> kafkaProducerListener() {
+    public ProducerListener kafkaProducerListener() {
         return new LoggingProducerListener();
     }
 
     @Bean
     @ConditionalOnMissingBean(KafkaTemplate.class)
-    public KafkaTemplate getKafkaTemplate() {
+    public KafkaTemplate kafkaTemplate() {
         KafkaTemplate kafkaTemplate = new KafkaTemplate(producerFactory());
         kafkaTemplate.setProducerListener(kafkaProducerListener());
         return kafkaTemplate;
+    }
+
+    @Bean
+    @ConditionalOnMissingBean(KafkaListenerContainerFactory.class)
+    public KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, String>> kafkaListenerContainerFactory() {
+        ConcurrentKafkaListenerContainerFactory<String, String> factory = new ConcurrentKafkaListenerContainerFactory<>();
+        factory.setConsumerFactory(kafkaConsumerFactory());
+        factory.getContainerProperties().setPollTimeout(1500);
+        return factory;
     }
 }
