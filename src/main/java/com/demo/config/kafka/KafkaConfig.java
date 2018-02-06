@@ -1,5 +1,7 @@
 package com.demo.config.kafka;
 
+import org.apache.kafka.clients.producer.ProducerConfig;
+import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,6 +19,7 @@ import org.springframework.kafka.support.ProducerListener;
 import org.springframework.kafka.support.TopicPartitionInitialOffset;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 import java.util.stream.Collectors;
@@ -27,12 +30,8 @@ import java.util.stream.Collectors;
 @Configuration
 @EnableKafka
 public class KafkaConfig {
-    @Bean
-    @ConditionalOnMissingBean(ProducerFactory.class)
     public ProducerFactory producerFactory() {
-        DefaultKafkaProducerFactory producerFactory = new DefaultKafkaProducerFactory(KafkaUtils.kafkaProperties);
-        producerFactory.start();
-        return producerFactory;
+        return new DefaultKafkaProducerFactory(KafkaUtils.kafkaProperties);
     }
 
     @Bean
@@ -59,9 +58,7 @@ public class KafkaConfig {
     @Bean
     @ConditionalOnMissingBean(KafkaTemplate.class)
     public KafkaTemplate kafkaTemplate() {
-        KafkaTemplate kafkaTemplate = new KafkaTemplate(producerFactory());
-        kafkaTemplate.setProducerListener(kafkaProducerListener());
-        return kafkaTemplate;
+        return new KafkaTemplate<String, String>(producerFactory());
     }
 
     @Bean
