@@ -30,7 +30,9 @@ public class KafkaConfig {
     @Bean
     @ConditionalOnMissingBean(ProducerFactory.class)
     public ProducerFactory producerFactory() {
-        return new DefaultKafkaProducerFactory(KafkaUtils.kafkaProperties);
+        DefaultKafkaProducerFactory producerFactory = new DefaultKafkaProducerFactory(KafkaUtils.kafkaProperties);
+        producerFactory.start();
+        return producerFactory;
     }
 
     @Bean
