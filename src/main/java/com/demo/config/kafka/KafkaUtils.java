@@ -18,12 +18,13 @@ public class KafkaUtils {
 
     private static Logger logger = LoggerFactory.getLogger(KafkaUtils.class);
 
-    public static Map<String, Object> kafkaProperties = loadKafkaProperties();
+    public static Map<String, Object> kafkaProducerProperties = loadKafkaProducerProperties();
+    public static Map<String, Object> kafkaConsumerProperties = loadKafkaConsumerProperties();
 
-    private static Map<String, Object> loadKafkaProperties() {
+    private static Map<String, Object> loadKafkaProducerProperties() {
         logger.info("loading Kafka properties ");
         try {
-            Properties props = PropertiesLoaderUtils.loadProperties(new ClassPathResource("/kafka/kafkaConfig.properties"));
+            Properties props = PropertiesLoaderUtils.loadProperties(new ClassPathResource("/kafka/kafkaProducerConfig.properties"));
             return props.entrySet().stream().collect(Collectors.toMap((entry) -> entry.getKey().toString(), (entry) -> entry.getValue()));
         } catch (IOException e) {
             e.printStackTrace();
@@ -31,5 +32,15 @@ public class KafkaUtils {
         return null;
     }
 
+    private static Map<String, Object> loadKafkaConsumerProperties() {
+        logger.info("loading Kafka properties ");
+        try {
+            Properties props = PropertiesLoaderUtils.loadProperties(new ClassPathResource("/kafka/kafkaConsumerConfig.properties"));
+            return props.entrySet().stream().collect(Collectors.toMap((entry) -> entry.getKey().toString(), (entry) -> entry.getValue()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
 }

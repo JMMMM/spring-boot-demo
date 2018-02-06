@@ -8,13 +8,17 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * @author Jimmy
  */
 @SpringBootApplication
 @Component
-public class SpringBootDemoApplication implements CommandLineRunner {
+@Controller
+public class SpringBootDemoApplication {
     @Autowired
     private KafkaTemplate<String, Object> template;
 
@@ -22,11 +26,13 @@ public class SpringBootDemoApplication implements CommandLineRunner {
         SpringApplication.run(SpringBootDemoApplication.class, args);
     }
 
-    @Override
-    public void run(String... args) throws Exception {
+    @ResponseBody
+    @RequestMapping(value = "sendMessage")
+    public Object haha() throws Exception {
         template.send("topic1", "test1");
         template.send("topic1", "test2");
         template.send("topic1", "test3");
+        return null;
     }
 
 }

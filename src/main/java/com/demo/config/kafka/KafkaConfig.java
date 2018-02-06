@@ -31,13 +31,13 @@ import java.util.stream.Collectors;
 @EnableKafka
 public class KafkaConfig {
     public ProducerFactory producerFactory() {
-        return new DefaultKafkaProducerFactory(KafkaUtils.kafkaProperties);
+        return new DefaultKafkaProducerFactory(KafkaUtils.kafkaProducerProperties);
     }
 
     @Bean
     @ConditionalOnMissingBean(ConsumerFactory.class)
     public ConsumerFactory kafkaConsumerFactory() {
-        return new DefaultKafkaConsumerFactory(KafkaUtils.kafkaProperties);
+        return new DefaultKafkaConsumerFactory(KafkaUtils.kafkaConsumerProperties);
     }
 
     @Bean
