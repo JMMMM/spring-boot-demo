@@ -12,7 +12,7 @@ apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
 
 jar {
-    baseName = 'spring-boot-demo'
+    baseName = 'spring-kafka-demo'
     version = '0.1.0'
 }
 
